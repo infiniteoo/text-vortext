@@ -1,4 +1,3 @@
-// components/TextHurricane.js
 "use client";
 import React from "react";
 import Sketch from "react-p5";
@@ -11,8 +10,8 @@ export default function TextCircles() {
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
     for (let i = 0; i < numLetters; i++) {
-      let radius = radii[i % radii.length]; // Cycle through the radii
-      letters.push(new Letter(p5, radius));
+      let isChaotic = i >= numLetters / 2; // First half orderly, second half chaotic
+      letters.push(new Letter(p5, isChaotic));
     }
   };
 
@@ -34,21 +33,31 @@ export default function TextCircles() {
   };
 
   class Letter {
-    constructor(p5, baseRadius) {
-      this.baseRadius = baseRadius;
-      this.radiusOffset = p5.random(-20, 20); // Random offset for oscillation
-      this.angle = p5.random(p5.TWO_PI); // Random starting angle
-      this.speed = p5.random(0.005, 0.05); // Variable speed
-      this.oscillationSpeed = p5.random(0.01, 0.03); // Speed of oscillation
-      this.char = String.fromCharCode(65 + Math.floor(p5.random(26))); // Random letter A-Z
+    constructor(p5, isChaotic = false) {
+      this.isChaotic = isChaotic;
+      this.baseRadius = isChaotic
+        ? p5.random(50, 300)
+        : radii[Math.floor(p5.random(radii.length))];
+      this.radiusOffset = p5.random(-20, 20);
+      this.angle = p5.random(p5.TWO_PI);
+      this.speed = isChaotic ? p5.random(0.01, 0.07) : p5.random(0.005, 0.05);
+      this.oscillationSpeed = isChaotic
+        ? p5.random(0.02, 0.06)
+        : p5.random(0.01, 0.03);
+      this.char = String.fromCharCode(65 + Math.floor(p5.random(26)));
+      this.pos = p5.createVector(
+        p5.width / 2 + this.baseRadius * p5.cos(this.angle),
+        p5.height / 2 + this.baseRadius * p5.sin(this.angle)
+      );
     }
 
     update(p5) {
       this.angle += this.speed;
 
-      // Oscillate the radius
+      let oscillationAmplitude = this.isChaotic ? 50 : 10;
       this.radiusOffset += this.oscillationSpeed;
-      let currentRadius = this.baseRadius + 10 * p5.sin(this.radiusOffset);
+      let currentRadius =
+        this.baseRadius + oscillationAmplitude * p5.sin(this.radiusOffset);
 
       this.pos = p5.createVector(
         p5.width / 2 + currentRadius * p5.cos(this.angle),

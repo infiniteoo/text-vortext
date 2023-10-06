@@ -1,4 +1,3 @@
-// components/TextHurricane.js
 "use client";
 import React from "react";
 import Sketch from "react-p5";
