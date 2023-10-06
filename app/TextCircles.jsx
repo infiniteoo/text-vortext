@@ -18,7 +18,7 @@ export default function TextCircles() {
   const draw = (p5) => {
     p5.background(0);
     for (let letter of letters) {
-      letter.update(p5); // Ensure p5 is passed here
+      letter.update(p5);
       letter.display(p5);
     }
 
@@ -81,10 +81,17 @@ export default function TextCircles() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           fontFamily: "Courier New",
-          whiteSpace: "",
+          color: "white",
+          fontSize: "48px",
+          fontWeight: "bold",
+          zIndex: 2,
+          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          padding: "10px",
+          borderRadius: "5px",
         }}
       >
-        {/* Your ASCII Art Here */}
+        Vortext
       </div>
     </div>
   );

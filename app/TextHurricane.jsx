@@ -52,9 +52,7 @@ export default function TextHurricane() {
           fontFamily: "Courier New",
           whiteSpace: "pre",
         }}
-      >
-        {/* Your ASCII Art Here */}
-      </div>
+      ></div>
     </div>
   );
 }
