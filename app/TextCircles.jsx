@@ -1,8 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic.js";
 import Sketch from "react-p5";
 
 export default function TextCircles() {
+  // State for the sidebar controls
+  const [speed, setSpeed] = useState(0.03);
+  const [direction, setDirection] = useState(1); // 1 for clockwise, -1 for counter-clockwise
+  const [color, setColor] = useState("#FFFFFF"); // default white
+  const [shape, setShape] = useState("TEXT"); // default is TEXT
+
   let letters = [];
   const numLetters = 1000;
   const radii = [100, 200, 300];
@@ -72,8 +79,61 @@ export default function TextCircles() {
   }
 
   return (
-    <div style={{ position: "relative" }}>
-      <Sketch setup={setup} draw={draw} />
+    <div className="relative flex flex-row">
+      <div>
+        <Sketch setup={setup} draw={draw} />
+      </div>
+      <div>
+        <div
+          style={{
+            width: "250px",
+            backgroundColor: "#333",
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <label>
+            Speed:
+            <input
+              type="range"
+              min="0.01"
+              max="0.1"
+              step="0.01"
+              value={speed}
+              onChange={(e) => setSpeed(parseFloat(e.target.value))}
+            />
+          </label>
+          <label>
+            Direction:
+            <select
+              value={direction}
+              onChange={(e) => setDirection(parseInt(e.target.value))}
+            >
+              <option value="1">Clockwise</option>
+              <option value="-1">Counter-Clockwise</option>
+            </select>
+          </label>
+          <label>
+            Color:
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+            />
+          </label>
+          <label>
+            Shape:
+            <select value={shape} onChange={(e) => setShape(e.target.value)}>
+              <option value="TEXT">Text</option>
+              <option value="CIRCLE">Circle</option>
+              <option value="SQUARE">Square</option>
+              {/* Add more shapes if needed */}
+            </select>
+          </label>
+        </div>
+      </div>
       <div
         style={{
           position: "absolute",
